@@ -12,11 +12,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface BookDao {
     
-    @Query("SELECT * FROM books ORDER BY lastReadAt DESC")
+    @Query("SELECT * FROM books ORDER BY lastReadTimestamp DESC")
     fun getAllBooks(): Flow<List<BookEntity>>
     
-    @Query("SELECT * FROM books WHERE id = :id")
-    suspend fun getBookById(id: Long): BookEntity?
+    @Query("SELECT * FROM books WHERE id = :bookId")
+    suspend fun getBookById(bookId: Long): BookEntity?
+    
+    @Query("SELECT * FROM books WHERE id = :bookId")
+    fun getBookByIdFlow(bookId: Long): Flow<BookEntity?>
     
     @Query("SELECT * FROM books WHERE filePath = :filePath")
     suspend fun getBookByFilePath(filePath: String): BookEntity?
@@ -30,6 +33,15 @@ interface BookDao {
     @Delete
     suspend fun deleteBook(book: BookEntity)
     
-    @Query("UPDATE books SET currentPosition = :position, lastReadAt = :lastReadAt WHERE id = :id")
-    suspend fun updateReadingProgress(id: Long, position: Int, lastReadAt: Long)
+    @Query("DELETE FROM books WHERE id = :bookId")
+    suspend fun deleteBookById(bookId: Long)
+    
+    @Query("UPDATE books SET currentPosition = :position, currentPage = :page, lastReadTimestamp = :timestamp WHERE id = :bookId")
+    suspend fun updateProgress(bookId: Long, position: Long, page: Int, timestamp: Long)
+    
+    @Query("UPDATE books SET isCompleted = :completed WHERE id = :bookId")
+    suspend fun markAsCompleted(bookId: Long, completed: Boolean)
+    
+    @Query("SELECT COUNT(*) FROM books")
+    suspend fun getBookCount(): Int
 }

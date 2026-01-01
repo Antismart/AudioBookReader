@@ -1,9 +1,9 @@
 package com.example.audiobookreader.data.repository
 
 import com.example.audiobookreader.data.local.dao.BookDao
-import com.example.audiobookreader.data.local.entity.BookEntity
+import com.example.audiobookreader.data.mapper.toDomain
+import com.example.audiobookreader.data.mapper.toEntity
 import com.example.audiobookreader.domain.model.Book
-import com.example.audiobookreader.domain.model.FileType
 import com.example.audiobookreader.domain.repository.BookRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -19,15 +19,15 @@ class BookRepositoryImpl @Inject constructor(
         }
     }
     
-    override suspend fun getBookById(id: Long): Book? {
-        return bookDao.getBookById(id)?.toDomain()
+    override suspend fun getBookById(bookId: Long): Book? {
+        return bookDao.getBookById(bookId)?.toDomain()
     }
     
-    override suspend fun getBookByFilePath(filePath: String): Book? {
-        return bookDao.getBookByFilePath(filePath)?.toDomain()
+    override fun getBookByIdFlow(bookId: Long): Flow<Book?> {
+        return bookDao.getBookByIdFlow(bookId).map { it?.toDomain() }
     }
     
-    override suspend fun insertBook(book: Book): Long {
+    override suspend fun addBook(book: Book): Long {
         return bookDao.insertBook(book.toEntity())
     }
     
@@ -39,38 +39,24 @@ class BookRepositoryImpl @Inject constructor(
         bookDao.deleteBook(book.toEntity())
     }
     
-    override suspend fun updateReadingProgress(id: Long, position: Int) {
-        bookDao.updateReadingProgress(id, position, System.currentTimeMillis())
+    override suspend fun deleteBookById(bookId: Long) {
+        bookDao.deleteBookById(bookId)
     }
     
-    private fun BookEntity.toDomain(): Book {
-        return Book(
-            id = id,
-            title = title,
-            author = author,
-            filePath = filePath,
-            fileType = FileType.fromExtension(fileType),
-            coverImagePath = coverPath,
-            totalPages = totalCharacters,
-            currentPage = currentPosition,
-            currentPosition = currentPosition.toLong(),
-            lastReadTimestamp = lastReadAt,
-            dateAdded = createdAt
+    override suspend fun updateProgress(bookId: Long, position: Long, page: Int) {
+        bookDao.updateProgress(
+            bookId = bookId,
+            position = position,
+            page = page,
+            timestamp = System.currentTimeMillis()
         )
     }
     
-    private fun Book.toEntity(): BookEntity {
-        return BookEntity(
-            id = id,
-            title = title,
-            author = author,
-            filePath = filePath,
-            fileType = fileType.name.lowercase(),
-            coverPath = coverImagePath,
-            totalCharacters = totalPages,
-            currentPosition = currentPosition.toInt(),
-            lastReadAt = lastReadTimestamp,
-            createdAt = dateAdded
-        )
+    override suspend fun markAsCompleted(bookId: Long, completed: Boolean) {
+        bookDao.markAsCompleted(bookId, completed)
+    }
+    
+    override suspend fun getBookCount(): Int {
+        return bookDao.getBookCount()
     }
 }

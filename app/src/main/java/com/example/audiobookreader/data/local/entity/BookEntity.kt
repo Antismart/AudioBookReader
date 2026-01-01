@@ -11,9 +11,12 @@ data class BookEntity(
     val author: String,
     val filePath: String,
     val fileType: String,
-    val coverPath: String? = null,
-    val totalCharacters: Int = 0,
-    val currentPosition: Int = 0,
-    val lastReadAt: Long = System.currentTimeMillis(),
-    val createdAt: Long = System.currentTimeMillis()
+    val coverImagePath: String? = null,
+    val totalPages: Int = 0,
+    val currentPage: Int = 0,
+    val currentPosition: Long = 0,
+    val duration: Long = 0,
+    val lastReadTimestamp: Long = System.currentTimeMillis(),
+    val dateAdded: Long = System.currentTimeMillis(),
+    val isCompleted: Boolean = false
 )
