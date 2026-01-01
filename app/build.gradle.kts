@@ -105,7 +105,9 @@ dependencies {
     implementation(libs.pdfbox.android)
     
     // EPUB handling
-    implementation(libs.epublib.core)
+    implementation(libs.epub4j.core) {
+        exclude(group = "xmlpull", module = "xmlpull")
+    }
     
     // Permissions handling
     implementation(libs.accompanist.permissions)

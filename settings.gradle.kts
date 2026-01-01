@@ -17,7 +17,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { setUrl("https://jitpack.io") } // Add JitPack repository
+        maven {
+            setUrl("https://jitpack.io")
+            content {
+                includeGroupByRegex("com\\.github.*")
+            }
+        }
     }
 }
 

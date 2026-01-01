@@ -3,9 +3,9 @@ package com.example.audiobookreader.core.parser
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.siegmann.epublib.domain.Book
-import nl.siegmann.epublib.domain.TOCReference
-import nl.siegmann.epublib.epub.EpubReader
+import io.documentnode.epub4j.domain.Book
+import io.documentnode.epub4j.domain.TOCReference
+import io.documentnode.epub4j.epub.EpubReader
 import java.io.File
 import java.io.FileInputStream
 
