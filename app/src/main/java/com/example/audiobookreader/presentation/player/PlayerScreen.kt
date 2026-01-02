@@ -78,8 +78,8 @@ fun PlayerScreen(
                         book = state.book,
                         isPlaying = playerState.isPlaying,
                         currentPosition = playerState.currentPosition,
-                        totalChunks = playerState.totalChunks,
-                        currentSpeed = PlaybackSpeed.fromSpeed(playerState.speechRate),
+                        totalCharacters = playerState.totalCharacters,
+                        currentSpeed = PlaybackSpeed.fromSpeed(playerState.playbackSpeed),
                         onPlayPause = {
                             if (playerState.isPlaying) {
                                 viewModel.pause()
@@ -102,7 +102,7 @@ private fun PlayerContent(
     book: com.example.audiobookreader.domain.model.Book,
     isPlaying: Boolean,
     currentPosition: Int,
-    totalChunks: Int,
+    totalCharacters: Int,
     currentSpeed: PlaybackSpeed,
     onPlayPause: () -> Unit,
     onStop: () -> Unit,
@@ -162,9 +162,9 @@ private fun PlayerContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Slider(
-                value = if (totalChunks > 0) currentPosition.toFloat() / totalChunks else 0f,
+                value = if (totalCharacters > 0) currentPosition.toFloat() / totalCharacters else 0f,
                 onValueChange = { progress ->
-                    val newPosition = (progress * totalChunks).toInt()
+                    val newPosition = (progress * totalCharacters).toInt()
                     onSeek(newPosition)
                 },
                 modifier = Modifier.fillMaxWidth()
@@ -175,12 +175,12 @@ private fun PlayerContent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Chunk $currentPosition",
+                    text = "${(currentPosition * 100 / maxOf(totalCharacters, 1))}%",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = "of $totalChunks",
+                    text = "$totalCharacters chars",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
