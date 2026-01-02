@@ -1,3 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Audio Book Reader</string>
+    <string name="app_name">AudioBook Reader</string>
+    
+    <!-- Library Screen -->
+    <string name="library_title">My Library</string>
+    <string name="empty_library">No books yet. Add a book to get started!</string>
+    <string name="add_book">Add Book</string>
+    
+    <!-- Player Screen -->
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
+    <string name="next_chapter">Next Chapter</string>
+    <string name="previous_chapter">Previous Chapter</string>
+    <string name="playback_speed">Speed</string>
+    
+    <!-- Common -->
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="error">Error</string>
+    <string name="loading">Loading…</string>
+    
+    <!-- Book Details -->
+    <string name="author">Author: %s</string>
+    <string name="pages">Pages: %d</string>
+    <string name="progress">Progress: %d%%</string>
+    
+    <!-- Errors -->
+    <string name="error_loading_book">Failed to load book</string>
+    <string name="error_parsing_file">Failed to parse file</string>
+    <string name="error_tts_init">Failed to initialize text-to-speech</string>
 </resources>
